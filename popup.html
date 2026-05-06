@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Capture</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <rect width="28" height="28" rx="6" fill="#0a0a0f"/>
+          <path d="M14 4L24 10V18L14 24L4 18V10L14 4Z" stroke="#e94560" stroke-width="1.5" fill="none"/>
+          <text x="14" y="16.5" text-anchor="middle" fill="white" font-size="6" font-weight="bold" font-family="system-ui">API</text>
+        </svg>
+      </div>
+      <div>
+        <h1 class="app-title">API Capture</h1>
+        <span class="version">v3.0.0</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div id="statusIndicator" class="status-indicator capturing">
+        <span class="status-dot"></span>
+        <span class="status-text">Capturing</span>
+      </div>
+      <button id="settingsBtn" class="icon-btn" title="Settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-label">Total</span>
+      <span id="statTotal" class="stat-value">0</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Requests</span>
+      <span id="statRequests" class="stat-value">0</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Responses</span>
+      <span id="statResponses" class="stat-value">0</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Errors</span>
+      <span id="statErrors" class="stat-value error-color">0</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Size</span>
+      <span id="statSize" class="stat-value">0 KB</span>
+    </div>
+  </div>
+
+  <!-- Filters Bar -->
+  <div class="filters-bar">
+    <div class="search-wrapper">
+      <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" id="searchInput" placeholder="Search URLs, bodies, headers..." autocomplete="off">
+      <button id="clearSearch" class="clear-search-btn hidden" title="Clear search">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="filter-selects">
+      <select id="typeFilter" class="filter-select">
+        <option value="all">All Types</option>
+        <option value="requests">Requests</option>
+        <option value="responses">Response Bodies</option>
+        <option value="errors">Errors</option>
+      </select>
+      <select id="statusFilter" class="filter-select">
+        <option value="all">All Status</option>
+        <option value="2xx">2xx Success</option>
+        <option value="3xx">3xx Redirect</option>
+        <option value="4xx">4xx Client Error</option>
+        <option value="5xx">5xx Server Error</option>
+        <option value="0">No Status</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Capture Mode Bar -->
+  <div class="capture-mode-bar">
+    <span class="capture-label">🎯 Capture:</span>
+    <div class="mode-buttons">
+      <button id="modeAll" class="mode-btn active" data-mode="all">All URLs</button>
+      <button id="modeDomains" class="mode-btn" data-mode="domains">Target Domains</button>
+      <button id="modeRegex" class="mode-btn" data-mode="regex">Custom Regex</button>
+    </div>
+    <button id="modeSettings" class="icon-btn" title="Configure capture mode">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Entries List -->
+  <div id="entriesList" class="entries-list">
+    <div id="emptyState" class="empty-state">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2a2a3a" stroke-width="1.5">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+      </svg>
+      <p>No captured requests yet</p>
+      <span class="empty-hint">Browse websites to start capturing API traffic</span>
+    </div>
+    <div id="loadingState" class="loading-state hidden">
+      <div class="spinner"></div>
+      <p>Loading entries...</p>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div id="pagination" class="pagination hidden">
+    <button id="prevPage" class="page-btn" disabled>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      Prev
+    </button>
+    <span id="pageInfo" class="page-info">Page 1 of 1</span>
+    <button id="nextPage" class="page-btn" disabled>
+      Next
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-left">
+      <button id="toggleCapture" class="capture-toggle capturing">
+        <span class="toggle-icon"></span>
+        <span id="toggleText">Pause</span>
+      </button>
+    </div>
+    <div class="footer-center">
+      <button id="exportBtn" class="footer-btn" title="Export data">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Export
+      </button>
+      <button id="clearBtn" class="footer-btn danger" title="Clear all data">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+        </svg>
+        Clear
+      </button>
+    </div>
+    <div class="footer-right">
+      <button id="openOptions" class="footer-btn" title="Open settings page">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        Settings
+      </button>
+    </div>
+  </footer>
+
+  <!-- Export Dropdown -->
+  <div id="exportDropdown" class="export-dropdown hidden">
+    <button class="export-option" data-format="json">
+      <span class="export-icon">📄</span> JSON
+    </button>
+    <button class="export-option" data-format="csv">
+      <span class="export-icon">📊</span> CSV
+    </button>
+    <button class="export-option" data-format="har">
+      <span class="export-icon">📦</span> HAR
+    </button>
+    <button class="export-option" data-format="ndjson">
+      <span class="export-icon">📋</span> NDJSON
+    </button>
+    <button class="export-option" data-format="sql">
+      <span class="export-icon">🗃️</span> SQL
+    </button>
+    <button class="export-option" data-format="markdown">
+      <span class="export-icon">📝</span> Markdown
+    </button>
+  </div>
+
+  <!-- Domain/Regex Modal -->
+  <div id="modalOverlay" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">Configure Capture Mode</h2>
+        <button id="modalClose" class="icon-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="modalDescription" class="modal-desc"></p>
+        <textarea id="modalTextarea" class="modal-textarea" placeholder="" rows="8" spellcheck="false"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button id="modalCancel" class="modal-btn secondary">Cancel</button>
+        <button id="modalSave" class="modal-btn primary">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Export Menu -->
+  <div id="exportMenu" class="export-menu hidden">
+    <div class="export-menu-header">
+      <span>Export Data</span>
+      <button id="closeExportMenu" class="icon-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="export-menu-options">
+      <button class="export-menu-item" data-format="json">
+        <span class="emi-icon" style="color:#4ade80">📄</span>
+        <div>
+          <div class="emi-title">JSON</div>
+          <div class="emi-desc">Full detailed export with metadata</div>
+        </div>
+      </button>
+      <button class="export-menu-item" data-format="csv">
+        <span class="emi-icon" style="color:#60a5fa">📊</span>
+        <div>
+          <div class="emi-title">CSV</div>
+          <div class="emi-desc">Tabular format for spreadsheets</div>
+        </div>
+      </button>
+      <button class="export-menu-item" data-format="har">
+        <span class="emi-icon" style="color:#fbbf24">📦</span>
+        <div>
+          <div class="emi-title">HAR</div>
+          <div class="emi-desc">HTTP Archive (DevTools compatible)</div>
+        </div>
+      </button>
+      <button class="export-menu-item" data-format="ndjson">
+        <span class="emi-icon" style="color:#a78bfa">📋</span>
+        <div>
+          <div class="emi-title">NDJSON</div>
+          <div class="emi-desc">Newline-delimited JSON</div>
+        </div>
+      </button>
+      <button class="export-menu-item" data-format="sql">
+        <span class="emi-icon" style="color:#f87171">🗃️</span>
+        <div>
+          <div class="emi-title">SQL</div>
+          <div class="emi-desc">SQL INSERT statements</div>
+        </div>
+      </button>
+      <button class="export-menu-item" data-format="markdown">
+        <span class="emi-icon" style="color:#2dd4bf">📝</span>
+        <div>
+          <div class="emi-title">Markdown</div>
+          <div class="emi-desc">Table preview (first 100)</div>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <script src="lib/export.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

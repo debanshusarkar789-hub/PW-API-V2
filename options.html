@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Capture - Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="options-container">
+    <!-- Header -->
+    <header class="options-header">
+      <div class="header-left">
+        <div class="logo">
+          <svg width="36" height="36" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="6" fill="#0a0a0f"/>
+            <path d="M14 4L24 10V18L14 24L4 18V10L14 4Z" stroke="#e94560" stroke-width="1.5" fill="none"/>
+            <text x="14" y="16.5" text-anchor="middle" fill="white" font-size="6" font-weight="bold" font-family="system-ui">API</text>
+          </svg>
+        </div>
+        <div>
+          <h1 class="app-title">API Capture</h1>
+          <span class="subtitle">Settings & Configuration</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <span class="version-badge">v3.0.0</span>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="options-main">
+      <!-- Capture Settings -->
+      <section class="settings-section">
+        <h2 class="section-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+          Capture Settings
+        </h2>
+        <div class="settings-grid">
+          <div class="setting-item">
+            <label class="setting-label" for="maxEntries">
+              Maximum entries to store
+              <span class="setting-desc">Oldest entries are deleted when limit is reached (100 - 50,000)</span>
+            </label>
+            <input type="number" id="maxEntries" min="100" max="50000" step="100" value="10000" class="setting-input">
+          </div>
+
+          <div class="setting-item">
+            <label class="setting-checkbox">
+              <input type="checkbox" id="captureHeaders" checked>
+              <span class="checkbox-custom"></span>
+              <div>
+                <span class="checkbox-label">Capture request/response headers</span>
+                <span class="setting-desc">Store all HTTP headers with captured requests</span>
+              </div>
+            </label>
+          </div>
+
+          <div class="setting-item">
+            <label class="setting-checkbox">
+              <input type="checkbox" id="captureBodies" checked>
+              <span class="checkbox-custom"></span>
+              <div>
+                <span class="checkbox-label">Capture response bodies</span>
+                <span class="setting-desc">Store response content (increases storage usage)</span>
+              </div>
+            </label>
+          </div>
+
+          <div class="setting-item">
+            <label class="setting-checkbox">
+              <input type="checkbox" id="highlightErrors" checked>
+              <span class="checkbox-custom"></span>
+              <div>
+                <span class="checkbox-label">Highlight errors in red</span>
+                <span class="setting-desc">Failed requests are visually highlighted</span>
+              </div>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Appearance -->
+      <section class="settings-section">
+        <h2 class="section-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          Appearance
+        </h2>
+        <div class="settings-grid">
+          <div class="setting-item">
+            <label class="setting-label">
+              Theme
+              <span class="setting-desc">Choose the application theme</span>
+            </label>
+            <div class="theme-selector">
+              <label class="theme-option">
+                <input type="radio" name="theme" value="dark" checked>
+                <span class="theme-card">
+                  <span class="theme-preview dark-preview"></span>
+                  <span class="theme-name">Dark</span>
+                  <svg class="theme-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+              </label>
+              <label class="theme-option">
+                <input type="radio" name="theme" value="light">
+                <span class="theme-card">
+                  <span class="theme-preview light-preview"></span>
+                  <span class="theme-name">Light</span>
+                  <svg class="theme-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+              </label>
+              <label class="theme-option">
+                <input type="radio" name="theme" value="system">
+                <span class="theme-card">
+                  <span class="theme-preview system-preview"></span>
+                  <span class="theme-name">System</span>
+                  <svg class="theme-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Notifications -->
+      <section class="settings-section">
+        <h2 class="section-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+          Notifications
+        </h2>
+        <div class="settings-grid">
+          <div class="setting-item">
+            <label class="setting-checkbox">
+              <input type="checkbox" id="showNotifications">
+              <span class="checkbox-custom"></span>
+              <div>
+                <span class="checkbox-label">Show notification on new capture</span>
+                <span class="setting-desc">Display browser notifications for captured requests</span>
+              </div>
+            </label>
+          </div>
+
+          <div class="setting-item">
+            <label class="setting-checkbox">
+              <input type="checkbox" id="playSoundOnError">
+              <span class="checkbox-custom"></span>
+              <div>
+                <span class="checkbox-label">Play sound on error responses</span>
+                <span class="setting-desc">Alert when 4xx or 5xx responses are detected</span>
+              </div>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Statistics Summary -->
+      <section class="settings-section">
+        <h2 class="section-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+          Statistics
+        </h2>
+        <div class="stats-grid">
+          <div class="stats-card">
+            <div class="stats-card-value" id="optStatTotal">0</div>
+            <div class="stats-card-label">Total Entries</div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-card-value" id="optStatRequests">0</div>
+            <div class="stats-card-label">Requests</div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-card-value" id="optStatResponses">0</div>
+            <div class="stats-card-label">Responses</div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-card-value error-text" id="optStatErrors">0</div>
+            <div class="stats-card-label">Errors</div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-card-value" id="optStatDomains">0</div>
+            <div class="stats-card-label">Unique Domains</div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-card-value" id="optStatSize">0 KB</div>
+            <div class="stats-card-label">Storage Size</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Data Management -->
+      <section class="settings-section">
+        <h2 class="section-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+          </svg>
+          Data Management
+        </h2>
+        <div class="data-actions">
+          <div class="data-action-row">
+            <div>
+              <div class="data-action-title">Export All Data as JSON</div>
+              <div class="data-action-desc">Download complete captured data in JSON format</div>
+            </div>
+            <button id="exportJSON" class="action-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              JSON
+            </button>
+          </div>
+
+          <div class="data-action-row">
+            <div>
+              <div class="data-action-title">Export as HAR</div>
+              <div class="data-action-desc">HTTP Archive format (compatible with DevTools, Fiddler)</div>
+            </div>
+            <button id="exportHAR" class="action-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              HAR
+            </button>
+          </div>
+
+          <div class="data-action-row">
+            <div>
+              <div class="data-action-title">Export as CSV</div>
+              <div class="data-action-desc">Tabular format for spreadsheet applications</div>
+            </div>
+            <button id="exportCSV" class="action-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              CSV
+            </button>
+          </div>
+
+          <div class="data-action-row">
+            <div>
+              <div class="data-action-title">Export as NDJSON</div>
+              <div class="data-action-desc">Newline-delimited JSON, one object per line</div>
+            </div>
+            <button id="exportNDJSON" class="action-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              NDJSON
+            </button>
+          </div>
+
+          <div class="data-action-row">
+            <div>
+              <div class="data-action-title">Export as SQL</div>
+              <div class="data-action-desc">SQL INSERT statements for database import</div>
+            </div>
+            <button id="exportSQL" class="action-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              SQL
+            </button>
+          </div>
+
+          <div class="data-action-row">
+            <div>
+              <div class="data-action-title">Export as Markdown</div>
+              <div class="data-action-desc">Markdown table with first 100 entries</div>
+            </div>
+            <button id="exportMD" class="action-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              MD
+            </button>
+          </div>
+
+          <div class="data-action-row danger">
+            <div>
+              <div class="data-action-title" style="color: var(--red)">Clear All Data</div>
+              <div class="data-action-desc">Permanently delete all captured entries</div>
+            </div>
+            <button id="clearAll" class="action-btn danger">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              </svg>
+              Clear All
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="options-footer">
+      <div class="footer-actions">
+        <button id="resetBtn" class="btn secondary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+          </svg>
+          Reset to Defaults
+        </button>
+        <button id="saveBtn" class="btn primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+          </svg>
+          Save Settings
+        </button>
+      </div>
+      <div class="footer-info">
+        Advanced API Capture v3.0.0 — For authorized security research only
+      </div>
+    </footer>
+  </div>
+
+  <!-- Toast container -->
+  <div id="toastContainer"></div>
+
+  <!-- Confirm overlay -->
+  <div id="confirmOverlay" class="confirm-overlay hidden">
+    <div class="confirm-dialog">
+      <h3 id="confirmTitle">⚠️ Are you sure?</h3>
+      <p id="confirmMessage">This action cannot be undone.</p>
+      <div class="confirm-actions">
+        <button id="confirmCancel" class="btn secondary">Cancel</button>
+        <button id="confirmOk" class="btn danger">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="lib/export.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
